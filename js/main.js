@@ -1,413 +1,589 @@
 // ==========================================
-// 投资回报计算器
+// 滴灌通投资决策平台 - 全局数据管理
 // ==========================================
-function calculateROI() {
-    const investAmount = parseFloat(document.getElementById('investAmount').value) || 0;
-    const annualRate = parseFloat(document.getElementById('annualRate').value) || 0;
-    const shareRatio = parseFloat(document.getElementById('shareRatio').value) || 0;
-    const monthlyRevenue = parseFloat(document.getElementById('monthlyRevenue').value) || 0;
-    const duration = parseInt(document.getElementById('duration').value) || 0;
 
-    // 计算月均分成
-    const monthlyShare = (monthlyRevenue * shareRatio / 100).toFixed(2);
-
-    // 计算封顶金额（本金 + 收益）
-    const cappedAmount = (investAmount * (1 + annualRate / 100)).toFixed(2);
-
-    // 计算总回报（基于月均分成和期限）
-    const totalReturn = (monthlyShare * duration).toFixed(2);
-
-    // 计算回本周期（月）
-    const paybackPeriod = (investAmount / monthlyShare).toFixed(1);
-
-    // 计算利润
-    const profit = (totalReturn - investAmount).toFixed(2);
-
-    // 更新显示
-    document.getElementById('monthlyShare').textContent = monthlyShare;
-    document.getElementById('totalReturn').textContent = totalReturn;
-    document.getElementById('cappedAmount').textContent = cappedAmount;
-    document.getElementById('paybackPeriod').textContent = paybackPeriod;
-    document.getElementById('profit').textContent = profit;
-}
-
-// 页面加载时自动计算一次
-window.addEventListener('load', calculateROI);
-
-// 导出计算结果
-function exportCalculation() {
-    const projectName = document.getElementById('projectName').value || '未命名项目';
-    const investAmount = document.getElementById('investAmount').value;
-    const annualRate = document.getElementById('annualRate').value;
-    const shareRatio = document.getElementById('shareRatio').value;
-    const monthlyRevenue = document.getElementById('monthlyRevenue').value;
-    const duration = document.getElementById('duration').value;
-    const paybackPeriod = document.getElementById('paybackPeriod').textContent;
-    const monthlyShare = document.getElementById('monthlyShare').textContent;
-    const totalReturn = document.getElementById('totalReturn').textContent;
-    const cappedAmount = document.getElementById('cappedAmount').textContent;
-    const profit = document.getElementById('profit').textContent;
-
-    const report = `
-投资回报计算报告
-==========================================
-项目名称：${projectName}
-生成日期：${new Date().toLocaleDateString('zh-CN')}
-
-基本信息
-------------------------------------------
-投资金额：${investAmount} 万元
-年化收益率：${annualRate}%
-分成比例：${shareRatio}%
-预计月收入：${monthlyRevenue} 万元
-联营期限：${duration} 个月
-
-计算结果
-------------------------------------------
-预计回本周期：${paybackPeriod} 个月
-月均分成：${monthlyShare} 万元
-总回报（期限内）：${totalReturn} 万元
-封顶金额（本+息）：${cappedAmount} 万元
-预计利润：${profit} 万元
-
-==========================================
-© 2026 滴灌通投资平台
-`;
-
-    // 创建下载链接
-    const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `投资回报计算_${projectName}_${new Date().toLocaleDateString('zh-CN')}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-}
+// 全局数据存储 - 用于数据前后勾稽
+const globalData = {
+    project: {},
+    calculator: {},
+    screening: {},
+    contract: {}
+};
 
 // ==========================================
-// 企业筛选评分
+// 投资报告生成
 // ==========================================
-function calculateScore() {
-    const companyName = document.getElementById('companyName').value;
+
+function generateReport() {
+    // 收集表单数据
+    const data = {
+        projectName: document.getElementById('projectName').value,
+        companyName: document.getElementById('companyName').value,
+        location: document.getElementById('location').value,
+        area: parseFloat(document.getElementById('area').value),
+        brandCount: parseInt(document.getElementById('brandCount').value),
+        investment: parseFloat(document.getElementById('reportInvestment').value),
+        annualRate: parseFloat(document.getElementById('reportAnnualRate').value),
+        shareRatio: parseFloat(document.getElementById('reportShareRatio').value),
+        monthlyGrossProfit: parseFloat(document.getElementById('monthlyGrossProfit').value)
+    };
     
-    if (!companyName) {
-        alert('请先输入企业名称！');
+    // 验证必填字段
+    if (!data.projectName || !data.companyName || !data.investment) {
+        alert('请填写必要的信息');
         return;
     }
+    
+    // 保存到全局数据
+    globalData.project = data;
+    
+    // 自动填充其他表单
+    autoFillForms(data);
+    
+    // 计算关键指标
+    const monthlyRevenue = data.monthlyGrossProfit / (70/100); // 假设70%毛利率
+    const monthlyShare = monthlyRevenue * (data.shareRatio / 100);
+    const cappedAmount = data.investment * (1 + data.annualRate / 100);
+    const paybackMonths = Math.ceil(cappedAmount / monthlyShare);
+    const duration = 18; // 联营期限
+    const totalReturn = monthlyShare * duration;
+    const expectedProfit = totalReturn - data.investment;
+    
+    // 生成报告内容
+    const reportHTML = `
+        <h3 class="report-section-title">一、项目概况</h3>
+        <div class="report-content">
+            <strong>项目名称：</strong>${data.projectName}<br>
+            <strong>运营企业：</strong>${data.companyName}<br>
+            <strong>项目点位：</strong>${data.location}<br>
+            <strong>项目面积：</strong>${data.area}平方米<br>
+            <strong>品牌数量：</strong>${data.brandCount}个<br>
+        </div>
+        
+        <h3 class="report-section-title">二、投资方案</h3>
+        <table class="report-table">
+            <tr>
+                <th>项目</th>
+                <th>数值</th>
+            </tr>
+            <tr>
+                <td>投资金额</td>
+                <td class="text-gold">${data.investment}万元</td>
+            </tr>
+            <tr>
+                <td>年化收益率</td>
+                <td class="text-gold">${data.annualRate}%</td>
+            </tr>
+            <tr>
+                <td>分成比例</td>
+                <td class="text-gold">${data.shareRatio}%</td>
+            </tr>
+            <tr>
+                <td>联营期限</td>
+                <td class="text-gold">${duration}个月</td>
+            </tr>
+        </table>
+        
+        <h3 class="report-section-title">三、收益预测</h3>
+        <table class="report-table">
+            <tr>
+                <th>指标</th>
+                <th>数值</th>
+            </tr>
+            <tr>
+                <td>月毛利</td>
+                <td class="text-gold">${data.monthlyGrossProfit.toFixed(2)}万元</td>
+            </tr>
+            <tr>
+                <td>预计月营业额</td>
+                <td class="text-gold">${monthlyRevenue.toFixed(2)}万元</td>
+            </tr>
+            <tr>
+                <td>月均分成收入</td>
+                <td class="text-gold">${monthlyShare.toFixed(2)}万元</td>
+            </tr>
+            <tr>
+                <td>回本周期</td>
+                <td class="text-gold">${paybackMonths}个月</td>
+            </tr>
+            <tr>
+                <td>联营期总收益</td>
+                <td class="text-gold">${totalReturn.toFixed(2)}万元</td>
+            </tr>
+            <tr>
+                <td>预期利润</td>
+                <td class="text-gold">${expectedProfit.toFixed(2)}万元</td>
+            </tr>
+            <tr>
+                <td>投资回报率</td>
+                <td class="text-gold">${((expectedProfit / data.investment) * 100).toFixed(2)}%</td>
+            </tr>
+        </table>
+        
+        <h3 class="report-section-title">四、商业模式分析（3L+C）</h3>
+        <div class="report-content">
+            <strong>Labor（专业团队）：</strong>${data.companyName}拥有专业的商业运营团队，具备丰富的品牌管理和点位运营经验。<br><br>
+            <strong>Land（优质点位）：</strong>项目位于${data.location}，属于高流量、高势能的核心商业点位，客流量稳定且消费力强。<br><br>
+            <strong>Leverage（品牌资源）：</strong>项目整合${data.brandCount}个优质品牌，形成多元化业态组合，增强抗风险能力。<br><br>
+            <strong>Capital（资金支持）：</strong>滴灌通提供${data.investment}万元投资支持，采用RBF（收入分成）模式，与运营方利益共享、风险共担。<br>
+        </div>
+        
+        <h3 class="report-section-title">五、风险控制</h3>
+        <div class="report-content">
+            <strong>1. 招商风险：</strong>项目已完成${data.brandCount}个品牌的招商，满租率达100%，降低空置风险。<br><br>
+            <strong>2. 收入保障：</strong>月毛利${data.monthlyGrossProfit}万元，毛利率70%，收入来源稳定。<br><br>
+            <strong>3. 履约保障：</strong>${data.companyName}历史履约记录良好，具备完善的数据报送和分成支付机制。<br><br>
+            <strong>4. 退出机制：</strong>联营期${duration}个月，到期后可选择续约或退出，灵活性强。<br>
+        </div>
+        
+        <h3 class="report-section-title">六、投资建议</h3>
+        <div class="report-content">
+            基于以上分析，<strong class="text-gold">${data.projectName}</strong>具备以下优势：<br><br>
+            ✓ 优质点位资源，客流量保障<br>
+            ✓ 多品牌组合，抗风险能力强<br>
+            ✓ 收入分成模式，利益绑定紧密<br>
+            ✓ 回本周期${paybackMonths}个月，投资回报率${((expectedProfit / data.investment) * 100).toFixed(2)}%<br><br>
+            <strong class="text-gold">综合评估：强烈推荐投资</strong>
+        </div>
+    `;
+    
+    // 显示报告
+    document.getElementById('reportContent').innerHTML = reportHTML;
+    document.getElementById('reportDate').textContent = new Date().toLocaleDateString('zh-CN');
+    document.getElementById('reportOutput').classList.remove('hidden');
+    
+    // 滚动到报告
+    document.getElementById('reportOutput').scrollIntoView({ behavior: 'smooth' });
+}
 
-    // 获取所有选择的值
-    const scores = [];
-    for (let i = 1; i <= 8; i++) {
-        const value = parseInt(document.getElementById(`criteria${i}`).value);
-        if (value === 0) {
-            alert('请完成所有标准的选择！');
-            return;
-        }
-        scores.push(value);
+function exportReport() {
+    const reportOutput = document.getElementById('reportOutput');
+    if (reportOutput.classList.contains('hidden')) {
+        alert('请先生成报告');
+        return;
     }
     
-    // 计算行业通识标准得分（前3项）
-    const industryScore = scores[0] + scores[1] + scores[2];
+    // 创建打印窗口
+    const printWindow = window.open('', '_blank');
+    const reportContent = reportOutput.innerHTML;
     
-    // 计算专属分析标准得分（后5项）
-    const specificScore = scores[3] + scores[4] + scores[5] + scores[6] + scores[7];
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>投资分析报告</title>
+            <style>
+                body { 
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                    padding: 2rem;
+                    background: white;
+                    color: #000;
+                }
+                h3 { 
+                    color: #d4af37;
+                    margin-top: 2rem;
+                    padding-bottom: 0.5rem;
+                    border-bottom: 2px solid #d4af37;
+                }
+                table { 
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 1rem 0;
+                }
+                th, td { 
+                    padding: 0.75rem;
+                    text-align: left;
+                    border: 1px solid #ddd;
+                }
+                th { 
+                    background: #f5f5f5;
+                    font-weight: 600;
+                }
+                .text-gold { color: #d4af37; }
+                .report-header {
+                    text-align: center;
+                    margin-bottom: 2rem;
+                    padding-bottom: 1rem;
+                    border-bottom: 3px solid #d4af37;
+                }
+                .report-logo {
+                    font-size: 2rem;
+                    font-weight: 700;
+                    color: #d4af37;
+                }
+            </style>
+        </head>
+        <body>
+            ${reportContent}
+        </body>
+        </html>
+    `);
     
-    // 总分
-    const totalScore = industryScore + specificScore;
+    printWindow.document.close();
+    printWindow.print();
+}
+
+function resetReport() {
+    document.getElementById('reportForm').reset();
+    document.getElementById('reportOutput').classList.add('hidden');
+}
+
+// ==========================================
+// 投资回报计算器
+// ==========================================
+
+function calculateROI() {
+    const investAmount = parseFloat(document.getElementById('investAmount').value);
+    const annualRate = parseFloat(document.getElementById('annualRate').value);
+    const shareRatio = parseFloat(document.getElementById('shareRatio').value);
+    const monthlyRevenue = parseFloat(document.getElementById('monthlyRevenue').value);
+    const duration = parseInt(document.getElementById('duration').value);
+    
+    if (!investAmount || !monthlyRevenue) {
+        alert('请填写必要的信息');
+        return;
+    }
+    
+    // 保存到全局数据
+    globalData.calculator = { investAmount, annualRate, shareRatio, monthlyRevenue, duration };
+    
+    // 计算
+    const monthlyShare = monthlyRevenue * (shareRatio / 100);
+    const cappedAmount = investAmount * (1 + annualRate / 100);
+    const paybackMonths = Math.ceil(cappedAmount / monthlyShare);
+    const totalReturn = monthlyShare * duration;
+    const expectedProfit = totalReturn - investAmount;
     
     // 显示结果
-    document.getElementById('companyNameResult').textContent = companyName;
-    document.getElementById('totalScore').textContent = totalScore;
-    document.getElementById('industryScore').textContent = industryScore;
-    document.getElementById('specificScore').textContent = specificScore;
+    document.getElementById('paybackMonths').textContent = `${paybackMonths}月`;
+    document.getElementById('totalReturn').textContent = totalReturn.toFixed(2);
+    document.getElementById('expectedProfit').textContent = expectedProfit.toFixed(2);
+    document.getElementById('monthlyShare').textContent = monthlyShare.toFixed(2);
     
-    // 评级和建议
-    let rating, recommendation, riskAnalysis;
-    
-    if (totalScore >= 170) {
-        rating = '⭐⭐⭐⭐⭐ 优秀';
-        recommendation = '强烈推荐投资。该企业具备优质点位资源、成熟运营能力和良好履约记录，预期回报稳定，风险可控。建议优先安排尽调，快速推进投资流程。投资金额建议：400-600万元。';
-        riskAnalysis = '风险等级：低。重点关注：①招商进度是否符合预期 ②品牌方合作协议的完整性 ③现金流数据的真实性验证 ④月度数据按时上报情况。';
-    } else if (totalScore >= 140) {
-        rating = '⭐⭐⭐⭐ 良好';
-        recommendation = '推荐投资。该企业整体表现良好，具备一定竞争优势，但部分指标仍有提升空间。建议进行详细尽调，重点评估弱项指标的改善计划。投资金额建议：300-400万元。';
-        riskAnalysis = '风险等级：中。重点关注：①点位资源的独占性和稳定性 ②团队执行能力的验证 ③历史项目的详细履约数据 ④首笔可采用较短周期（12月）测试。';
-    } else if (totalScore >= 110) {
-        rating = '⭐⭐⭐ 一般';
-        recommendation = '谨慎考虑。该企业基础条件尚可，但存在明显短板。建议要求企业提供详细改善方案，可考虑小额试点投资，验证运营能力后再扩大规模。投资金额建议：≤200万元。';
-        riskAnalysis = '风险等级：较高。重点关注：①是否有成功案例支撑 ②资金使用计划的合理性 ③保底收入机制是否完善 ④建议回本后再追加投资。';
-    } else {
-        rating = '⭐⭐ 不推荐';
-        recommendation = '不建议投资。该企业在多项核心指标上表现不佳，存在较大不确定性。建议暂缓投资，待企业补足短板后重新评估。';
-        riskAnalysis = '风险等级：高。主要问题：①缺乏优质点位资源 ②履约能力存疑 ③团队经验不足。若确有合作意向，必须要求实控人提供个人担保，并设置严格的对赌条款。';
+    document.getElementById('calculatorResults').classList.remove('hidden');
+    document.getElementById('calculatorResults').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetCalculator() {
+    document.getElementById('calculatorForm').reset();
+    document.getElementById('calculatorResults').classList.add('hidden');
+}
+
+// ==========================================
+// 企业筛选评估
+// ==========================================
+
+function calculateScore() {
+    const enterpriseName = document.getElementById('enterpriseName').value;
+    if (!enterpriseName) {
+        alert('请输入企业名称');
+        return;
     }
     
-    document.getElementById('scoreRating').innerHTML = rating;
-    document.getElementById('recommendation').textContent = recommendation;
-    document.getElementById('riskAnalysis').textContent = riskAnalysis;
+    // 收集评分
+    let totalScore = 0;
+    for (let i = 1; i <= 8; i++) {
+        totalScore += parseInt(document.getElementById(`criteria${i}`).value);
+    }
     
-    // 显示结果区域
-    document.getElementById('scoreResult').classList.remove('hidden');
+    // 保存到全局数据
+    globalData.screening = { enterpriseName, totalScore };
     
-    // 滚动到结果区域
-    document.getElementById('scoreResult').scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'nearest' 
-    });
+    // 确定评级和建议
+    let rating, ratingClass, recommendation, riskControl;
+    
+    if (totalScore >= 185) {
+        rating = '优秀';
+        ratingClass = 'excellent';
+        recommendation = `<strong>${enterpriseName}</strong>综合评分<strong class="text-gold">${totalScore}分</strong>，属于<strong class="text-gold">优秀级别</strong>。<br><br>
+            <strong>投资建议：强烈推荐投资</strong><br>
+            建议投资规模：400-600万元<br>
+            建议年化收益：18%<br>
+            建议分成比例：35%<br>
+            联营期限：18个月`;
+        riskControl = `${enterpriseName}具备优质点位获取能力，历史履约记录良好，AI技术应用成熟，品牌资源丰富。建议重点关注：1）招商进度按时完成；2）每月数据及时报送；3）分成款项准时支付。`;
+    } else if (totalScore >= 155) {
+        rating = '良好';
+        ratingClass = 'good';
+        recommendation = `<strong>${enterpriseName}</strong>综合评分<strong class="text-gold">${totalScore}分</strong>，属于<strong class="text-gold">良好级别</strong>。<br><br>
+            <strong>投资建议：可以投资</strong><br>
+            建议投资规模：200-400万元<br>
+            建议年化收益：16-18%<br>
+            建议分成比例：40%<br>
+            联营期限：12-15个月`;
+        riskControl = `${enterpriseName}整体能力较强，但仍有提升空间。建议重点关注：1）点位资源质量；2）品牌招商能力；3）运营数据真实性；4）团队稳定性。建议增加月度运营审核频次。`;
+    } else if (totalScore >= 125) {
+        rating = '一般';
+        ratingClass = 'fair';
+        recommendation = `<strong>${enterpriseName}</strong>综合评分<strong class="text-gold">${totalScore}分</strong>，属于<strong class="text-gold">一般级别</strong>。<br><br>
+            <strong>投资建议：谨慎投资</strong><br>
+            建议投资规模：100-200万元<br>
+            建议年化收益：14-16%<br>
+            建议分成比例：50%<br>
+            联营期限：6-12个月`;
+        riskControl = `${enterpriseName}存在较多不确定因素。建议重点关注：1）点位资源是否稳定；2）品牌招商是否达标；3）收入是否达到预期；4）履约能力是否可靠。建议设置更严格的退出条款和风控措施。`;
+    } else {
+        rating = '不推荐';
+        ratingClass = 'poor';
+        recommendation = `<strong>${enterpriseName}</strong>综合评分<strong class="text-gold">${totalScore}分</strong>，低于投资标准。<br><br>
+            <strong>投资建议：不建议投资</strong><br>
+            综合能力不足，风险较高，建议观望或要求企业提升能力后再评估。`;
+        riskControl = `${enterpriseName}综合能力较弱，不符合当前投资标准。主要风险：点位资源质量差、运营能力不足、品牌资源匮乏、团队经验不足。建议暂不投资，待企业提升能力后再行评估。`;
+    }
+    
+    // 显示结果
+    document.getElementById('totalScore').textContent = totalScore;
+    document.getElementById('scoreRating').textContent = rating;
+    document.getElementById('scoreRating').className = `score-rating ${ratingClass}`;
+    document.getElementById('scoreRecommendation').innerHTML = recommendation;
+    document.getElementById('riskControl').innerHTML = riskControl;
+    
+    document.getElementById('screeningResults').classList.remove('hidden');
+    document.getElementById('screeningResults').scrollIntoView({ behavior: 'smooth' });
 }
 
 function resetScreening() {
-    document.getElementById('companyName').value = '';
-    for (let i = 1; i <= 8; i++) {
-        document.getElementById(`criteria${i}`).value = '0';
-    }
-    document.getElementById('scoreResult').classList.add('hidden');
-    window.scrollTo({ top: document.getElementById('screening').offsetTop - 100, behavior: 'smooth' });
-}
-
-// 导出筛选报告
-function exportScreening() {
-    const companyName = document.getElementById('companyNameResult').textContent;
-    const totalScore = document.getElementById('totalScore').textContent;
-    const industryScore = document.getElementById('industryScore').textContent;
-    const specificScore = document.getElementById('specificScore').textContent;
-    const rating = document.getElementById('scoreRating').textContent;
-    const recommendation = document.getElementById('recommendation').textContent;
-    const riskAnalysis = document.getElementById('riskAnalysis').textContent;
-
-    const report = `
-企业筛选评估报告
-==========================================
-企业名称：${companyName}
-评估日期：${new Date().toLocaleDateString('zh-CN')}
-评估机构：滴灌通投资（海南）有限公司
-
-综合评分
-------------------------------------------
-总分：${totalScore} / 200 分
-评级：${rating}
-
-分项得分
-------------------------------------------
-行业通识标准：${industryScore} / 60 分
-专属分析标准：${specificScore} / 140 分
-
-投资建议
-------------------------------------------
-${recommendation}
-
-风控要点
-------------------------------------------
-${riskAnalysis}
-
-==========================================
-本报告基于8项标准评估体系生成
-评估标准权重：行业通识30% + 专属分析70%
-© 2026 滴灌通投资平台
-`;
-
-    const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `企业评估报告_${companyName}_${new Date().toLocaleDateString('zh-CN')}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+    document.getElementById('screeningForm').reset();
+    document.getElementById('screeningResults').classList.add('hidden');
 }
 
 // ==========================================
-// 合同生成器
+// 投资合同生成
 // ==========================================
+
 function generateContract() {
-    const partyA = document.getElementById('partyA').value;
+    const partyA = document.getElementById('partyA').value || '滴灌通投资（海南）有限公司';
     const partyB = document.getElementById('partyB').value;
-    const location = document.getElementById('location').value;
-    const amount = document.getElementById('contractAmount').value;
-    const rate = document.getElementById('contractRate').value;
-    const share = document.getElementById('contractShare').value;
-    const period = document.getElementById('contractPeriod').value;
-    const signDate = document.getElementById('signDate').value || new Date().toLocaleDateString('zh-CN');
-
-    if (!partyB || !location) {
-        alert('请填写必要信息：乙方名称和项目点位');
+    const location = document.getElementById('contractLocation').value;
+    const investment = parseFloat(document.getElementById('contractInvestment').value);
+    const annualRate = parseFloat(document.getElementById('contractAnnualRate').value);
+    const shareRatio = parseFloat(document.getElementById('contractShareRatio').value);
+    const duration = parseInt(document.getElementById('contractDuration').value);
+    
+    if (!partyB || !location || !investment) {
+        alert('请填写必要的信息');
         return;
     }
+    
+    // 保存到全局数据
+    globalData.contract = { partyA, partyB, location, investment, annualRate, shareRatio, duration };
+    
+    // 计算关键数据
+    const cappedAmount = investment * (1 + annualRate / 100);
+    const dailyRate = (annualRate / 365).toFixed(4);
+    
+    // 生成合同
+    const contractHTML = `
+<strong>联营投资协议</strong>
 
-    const contract = `
-        <div class="space-y-6 text-sm leading-relaxed">
-            <div class="text-center">
-                <h3 class="text-2xl font-bold text-purple-600 mb-2">联合经营协议</h3>
-                <p class="text-gray-600">合同编号：DGT_${new Date().getFullYear()}_${Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
-            </div>
+甲方（投资方）：${partyA}
+乙方（运营方）：${partyB}
 
-            <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-600">
-                <h4 class="font-bold text-gray-800 mb-2">合同主体</h4>
-                <p><strong>甲方（投资方）：</strong>${partyA}</p>
-                <p><strong>乙方（运营主体）：</strong>${partyB}</p>
-                <p><strong>项目点位：</strong>${location}</p>
-                <p><strong>签约日期：</strong>${signDate}</p>
-            </div>
+根据《中华人民共和国合同法》等相关法律法规，甲乙双方在平等、自愿、公平、诚实信用的基础上，就甲方投资乙方运营项目事宜，达成如下协议：
 
-            <div class="bg-blue-50 p-4 rounded-lg">
-                <h4 class="font-bold text-gray-800 mb-3">第一条 投资金额与期限</h4>
-                <p class="mb-2">1.1 甲方向乙方提供联营资金人民币 <strong class="text-blue-600 text-lg">${amount}万元</strong>，用于${location}项目的日常业务经营。</p>
-                <p class="mb-2">1.2 联营期限为 <strong class="text-blue-600 text-lg">${period}个月</strong>，自资金到账之日起计算。</p>
-                <p>1.3 资金到账后，乙方应于5个工作日内提供资金到账凭证。</p>
-            </div>
+<h3>第一条 投资概况</h3>
 
-            <div class="bg-green-50 p-4 rounded-lg">
-                <h4 class="font-bold text-gray-800 mb-3">第二条 收入分成安排</h4>
-                <p class="mb-2">2.1 乙方应按月向甲方分成，分成比例为乙方收入的 <strong class="text-green-600 text-lg">${share}%</strong>。</p>
-                <p class="mb-2">2.2 乙方收入包括但不限于：租金、联销经营费用、服务费、可确认的剩余押金或保证金。</p>
-                <p class="mb-2">2.3 封顶机制：累计分成金额达到投资本金×（1+${rate}%）= <strong class="text-green-600 text-lg">${(amount * (1 + rate/100)).toFixed(2)}万元</strong> 时，合作终止。</p>
-                <p class="mb-2">2.4 数据传输：每月1号前，乙方应向甲方提供上月完整经营数据。</p>
-                <p>2.5 分成付款：每月1号通过系统自动分账或银行转账方式支付。</p>
-            </div>
+1.1 <strong>项目点位：</strong>${location}
 
-            <div class="bg-yellow-50 p-4 rounded-lg">
-                <h4 class="font-bold text-gray-800 mb-3">第三条 前置条件</h4>
-                <p class="mb-2">甲方提供联营资金的前置条件包括：</p>
-                <ol class="list-decimal list-inside space-y-1 ml-4">
-                    <li>乙方已取得经营业务所需的营业执照及相关资质证照；</li>
-                    <li>乙方已签署${location}的租赁合同，并提供令甲方满意的相关证明；</li>
-                    <li>甲方完成对项目的尽职调查，并取得关于提供联营资金的内部审批；</li>
-                    <li>甲方与乙方的数据传输方案与分账方案均已完成且符合甲方要求；</li>
-                    <li>乙方不存在任何违反本协议的陈述、保证及承诺或其它约定的情形。</li>
-                </ol>
-                <p class="mt-2 text-red-600 font-semibold">若前置条件在协议签署后20日内未满足，甲方有权单方面解除本协议。</p>
-            </div>
+1.2 <strong>投资金额：</strong>人民币${investment}万元整
 
-            <div class="bg-red-50 p-4 rounded-lg">
-                <h4 class="font-bold text-gray-800 mb-3">第四条 风险控制措施</h4>
-                <p class="mb-2">4.1 <strong>招商保障：</strong>乙方应在联营开始前完成招商，储备3-5个不同业态的备选品牌。</p>
-                <p class="mb-2">4.2 <strong>收入保障：</strong>租金采用保底租金+营业额分成机制，双重保障取其高。</p>
-                <p class="mb-2">4.3 <strong>数据核验：</strong>通过营业截图+POS机小票双重验证，便于监控异常情况。</p>
-                <p class="mb-2">4.4 <strong>违约处理：</strong>品牌违约或临时撤租，乙方可抵扣品牌押金；联合投资方共担风险。</p>
-                <p>4.5 <strong>资金监管：</strong>资金仅限用于项目日常业务经营，接受政府主管部门合规性检查。</p>
-            </div>
+1.3 <strong>年化收益率：</strong>${annualRate}%
 
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-bold text-gray-800 mb-3">第五条 各方权利义务</h4>
-                <p class="mb-2"><strong>甲方：</strong>提供联营资金，获得收入分成，有权监督资金使用和经营数据。</p>
-                <p class="mb-2"><strong>乙方：</strong>经营项目，按约定分成，提供真实完整的数据，不得挪用资金。</p>
-                <p><strong>丙方：</strong>作为乙方母公司，承担连带责任，协助项目运营管理。</p>
-            </div>
+1.4 <strong>分成比例：</strong>甲方获得项目营业额的${shareRatio}%作为投资回报
 
-            <div class="bg-purple-50 p-4 rounded-lg">
-                <h4 class="font-bold text-gray-800 mb-3">第六条 特殊约定</h4>
-                <p class="mb-2">6.1 <strong>分成前债务：</strong>甲方不承担收入分成期开始前乙方存在的任何债务、负债和责任。</p>
-                <p class="mb-2">6.2 <strong>税费承担：</strong>甲方不承担乙方经营应缴付的任何税项，乙方应按相关法律法规自行承担。</p>
-                <p class="mb-2">6.3 <strong>押金处理：</strong>商户提前退租或触发不退还条件时，剩余押金确认为乙方收入参与分成。</p>
-                <p>6.4 <strong>保密义务：</strong>各方应对本协议内容及项目信息保密，未经对方同意不得向第三方披露。</p>
-            </div>
+1.5 <strong>联营期限：</strong>${duration}个月
 
-            <div class="bg-gray-100 p-4 rounded-lg">
-                <h4 class="font-bold text-gray-800 mb-3">第七条 违约责任</h4>
-                <p class="mb-2">7.1 乙方未按时支付分成款项的，应按日支付应付金额0.05%的违约金。</p>
-                <p class="mb-2">7.2 乙方提供虚假数据的，甲方有权要求乙方立即返还全部投资款项并支付20%的违约金。</p>
-                <p>7.3 任何一方违反本协议导致协议无法履行的，违约方应承担守约方的全部损失。</p>
-            </div>
+<h3>第二条 投资方式与资金使用</h3>
 
-            <div class="bg-blue-50 p-4 rounded-lg">
-                <h4 class="font-bold text-gray-800 mb-3">第八条 争议解决</h4>
-                <p class="mb-2">8.1 本协议适用中华人民共和国法律。</p>
-                <p class="mb-2">8.2 因本协议引起的或与本协议有关的任何争议，各方应友好协商解决。</p>
-                <p>8.3 协商不成的，任何一方均可向甲方所在地人民法院提起诉讼。</p>
-            </div>
+2.1 甲方以现金方式向乙方投资，用于项目的装修、设备采购、品牌加盟费等相关费用。
 
-            <div class="mt-8 pt-6 border-t-2 border-gray-300">
-                <p class="text-center text-gray-600 mb-6">本协议一式两份，甲乙双方各执一份，具有同等法律效力。</p>
-                <div class="grid grid-cols-2 gap-8 mt-8">
-                    <div>
-                        <p class="font-bold">甲方（盖章）：</p>
-                        <p class="mt-2">${partyA}</p>
-                        <p class="mt-4">法定代表人/授权代表：___________</p>
-                        <p class="mt-4">签署日期：${signDate}</p>
-                    </div>
-                    <div>
-                        <p class="font-bold">乙方（盖章）：</p>
-                        <p class="mt-2">${partyB}</p>
-                        <p class="mt-4">法定代表人/授权代表：___________</p>
-                        <p class="mt-4">签署日期：${signDate}</p>
-                    </div>
-                </div>
-            </div>
+2.2 乙方应合理使用投资款项，不得挪作他用。
 
-            <div class="text-center text-xs text-gray-500 mt-8 pt-4 border-t">
-                本合同由滴灌通投资决策平台自动生成 | © 2026 滴灌通投资（海南）有限公司
-            </div>
-        </div>
+2.3 乙方应向甲方提供资金使用明细和相关凭证。
+
+<h3>第三条 收益分配</h3>
+
+3.1 分成计算：甲方每月获得项目营业额（以实际到账为准）的${shareRatio}%作为投资回报。
+
+3.2 封顶机制：甲方累计分成达到${cappedAmount}万元（投资本金×${1 + annualRate/100}）时，投资关系终止。
+
+3.3 日平息计算：按日平息${dailyRate}%计算，确保年化收益率${annualRate}%。
+
+3.4 支付时间：乙方应于每月1号前将上月分成款项支付至甲方指定账户。
+
+<h3>第四条 数据报送与监督</h3>
+
+4.1 乙方应于每月1号前向甲方报送上月营业数据，包括但不限于：
+    - 营业额明细
+    - 品牌入驻情况
+    - 客流量数据
+    - 费用支出情况
+
+4.2 甲方有权要求乙方提供相关凭证（如机场POS小票、银行流水等）以核实数据真实性。
+
+4.3 乙方应配合甲方的实地考察和审计工作。
+
+<h3>第五条 前置条件</h3>
+
+5.1 项目已取得合法经营资质
+5.2 租赁合同已签订且有效
+5.3 品牌招商完成率不低于80%
+5.4 装修方案已获批准
+5.5 乙方已提供历史运营数据
+5.6 风险缓释措施已落实
+
+<h3>第六条 违约责任</h3>
+
+6.1 乙方未按时支付分成款项的，每逾期一日，应按欠付金额的0.5%向甲方支付违约金。
+
+6.2 乙方提供虚假数据或隐瞒真实经营情况的，甲方有权要求乙方立即返还全部投资本金并支付违约金。
+
+6.3 乙方未经甲方同意擅自转让、转包项目的，视为根本违约，甲方有权解除协议并要求赔偿。
+
+<h3>第七条 退出机制</h3>
+
+7.1 正常退出：联营期满或累计分成达到封顶金额时，投资关系自动终止。
+
+7.2 提前退出：
+    - 甲方提前退出：需提前30天书面通知乙方，乙方应返还剩余本金。
+    - 乙方提前退出：需提前60天书面通知甲方，并返还全部本金及按比例计算的收益。
+
+7.3 强制退出：乙方出现重大违约、经营不善导致连续3个月无法支付分成等情况，甲方有权要求立即退出并追究违约责任。
+
+<h3>第八条 争议解决</h3>
+
+8.1 本协议履行过程中发生的争议，双方应友好协商解决。
+
+8.2 协商不成的，任何一方均可向甲方所在地人民法院提起诉讼。
+
+<h3>第九条 其他约定</h3>
+
+9.1 本协议自双方签字盖章之日起生效。
+
+9.2 本协议一式两份,甲乙双方各执一份，具有同等法律效力。
+
+9.3 本协议未尽事宜，双方可另行签订补充协议，补充协议与本协议具有同等法律效力。
+
+
+甲方（盖章）：${partyA}            乙方（盖章）：${partyB}
+
+法定代表人：_______________        法定代表人：_______________
+
+签订日期：_______________          签订日期：_______________
     `;
-
-    document.getElementById('contractPreview').innerHTML = contract;
+    
+    document.getElementById('contractPreview').innerHTML = contractHTML;
+    document.getElementById('contractPreview').classList.remove('hidden');
+    document.getElementById('contractPreview').scrollIntoView({ behavior: 'smooth' });
 }
 
-// 下载合同
 function downloadContract() {
-    const preview = document.getElementById('contractPreview');
-    if (preview.textContent.includes('请填写左侧信息后生成合同')) {
-        alert('请先生成合同！');
+    const contractPreview = document.getElementById('contractPreview');
+    if (contractPreview.classList.contains('hidden')) {
+        alert('请先生成合同');
         return;
     }
-
-    const partyB = document.getElementById('partyB').value || '企业';
-    const content = preview.innerText;
-
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
+    
+    const contractText = contractPreview.innerText;
+    const blob = new Blob([contractText], { type: 'text/plain;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `联合经营协议_${partyB}_${new Date().toLocaleDateString('zh-CN')}.txt`;
+    a.download = `联营投资协议_${globalData.contract.partyB}_${new Date().toLocaleDateString('zh-CN').replace(/\//g, '-')}.txt`;
     a.click();
-    URL.revokeObjectURL(url);
+    window.URL.revokeObjectURL(url);
+}
+
+function resetContract() {
+    document.getElementById('contractForm').reset();
+    document.getElementById('contractPreview').classList.add('hidden');
 }
 
 // ==========================================
-// 平滑滚动
+// 数据自动填充（勾稽）
 // ==========================================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+
+function autoFillForms(projectData) {
+    // 自动填充计算器
+    if (projectData.investment) {
+        document.getElementById('investAmount').value = projectData.investment;
+    }
+    if (projectData.annualRate) {
+        document.getElementById('annualRate').value = projectData.annualRate;
+    }
+    if (projectData.shareRatio) {
+        document.getElementById('shareRatio').value = projectData.shareRatio;
+    }
+    if (projectData.monthlyGrossProfit) {
+        const monthlyRevenue = projectData.monthlyGrossProfit / 0.7;
+        document.getElementById('monthlyRevenue').value = monthlyRevenue.toFixed(2);
+    }
+    
+    // 自动填充企业筛选
+    if (projectData.companyName) {
+        document.getElementById('enterpriseName').value = projectData.companyName;
+    }
+    
+    // 自动填充合同
+    if (projectData.companyName) {
+        document.getElementById('partyB').value = projectData.companyName;
+    }
+    if (projectData.location) {
+        document.getElementById('contractLocation').value = projectData.location;
+    }
+    if (projectData.investment) {
+        document.getElementById('contractInvestment').value = projectData.investment;
+    }
+    if (projectData.annualRate) {
+        document.getElementById('contractAnnualRate').value = projectData.annualRate;
+    }
+    if (projectData.shareRatio) {
+        document.getElementById('contractShareRatio').value = projectData.shareRatio;
+    }
+}
+
+// ==========================================
+// 页面初始化
+// ==========================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ 滴灌通投资决策平台已完全加载');
+    
+    // 平滑滚动导航
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // 更新活动状态
+                document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            }
+        });
+    });
+    
+    // 滚动时更新导航高亮
+    window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav-menu a');
+        
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (window.pageYOffset >= sectionTop - 100) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
     });
 });
-
-// ==========================================
-// 初始化和调试
-// ==========================================
-console.log('main.js 文件开始加载');
-
-// 测试函数是否可用
-window.testJS = function() {
-    alert('JavaScript 功能正常！');
-    console.log('测试函数被调用');
-};
-
-// 页面加载完成后执行
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM 内容已加载');
-    
-    // 设置默认签约日期为今天
-    const signDateInput = document.getElementById('signDate');
-    if (signDateInput) {
-        const today = new Date().toISOString().split('T')[0];
-        signDateInput.value = today;
-        console.log('签约日期已设置:', today);
-    }
-    
-    // 自动计算一次投资回报
-    calculateROI();
-    
-    console.log('✅ 超级加盟商投资决策平台已完全加载');
-    console.log('✅ calculateROI:', typeof calculateROI);
-    console.log('✅ calculateScore:', typeof calculateScore);
-    console.log('✅ generateContract:', typeof generateContract);
-});
-
-console.log('main.js 文件加载完成');
