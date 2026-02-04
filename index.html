@@ -3,535 +3,433 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="超级加盟商行业可行性研究报告 2026 - 深度分析高势能点位、投资模型与回报，基于肆瓦商业实践数据。">
-    <meta name="keywords" content="超级加盟商,投资分析,财务模型,高势能点位,机场商业,肆瓦商业">
-    <meta name="author" content="滴灌通">
-    <meta name="theme-color" content="#6366f1">
-    
-    <title>超级加盟商行业投资决策平台 2026 | 滴灌通</title>
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-    
-    <!-- Scripts -->
+    <title>超级加盟商投资决策平台 | 滴灌通</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card {
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .result-card {
+            animation: slideUp 0.5s ease;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
-<body>
-    <!-- 导航栏 -->
-    <nav class="nav-bar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                </svg>
-                <span class="brand-text">滴灌通投资</span>
-            </div>
-            <div class="nav-links">
-                <a href="#hero" class="nav-item">首页</a>
-                <a href="#industry" class="nav-item">行业报告</a>
-                <a href="#screening" class="nav-item">企业筛选</a>
-                <a href="#contract" class="nav-item">合同条款</a>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-6 sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold">🏢 超级加盟商投资决策平台</h1>
+                <nav class="space-x-6">
+                    <a href="#calculator" class="hover:text-purple-200">投资计算</a>
+                    <a href="#screening" class="hover:text-purple-200">企业筛选</a>
+                    <a href="#contract" class="hover:text-purple-200">合同生成</a>
+                </nav>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- 英雄区 -->
-    <main id="main-content">
-    <section id="hero" class="hero-section">
-        <div class="hero-bg"></div>
-        <div class="hero-container">
-            <h1 class="hero-title">
-                超级加盟商行业<br>
-                <span class="gradient-text">投资决策平台</span>
-            </h1>
-            <p class="hero-subtitle">高势能点位 × AI驱动 × 稳健回报</p>
-            <div class="hero-meta">
-                <div class="meta-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                        <line x1="16" y1="2" x2="16" y2="6"/>
-                        <line x1="8" y1="2" x2="8" y2="6"/>
-                        <line x1="3" y1="10" x2="21" y2="10"/>
-                    </svg>
-                    2026年2月4日
-                </div>
-                <div class="meta-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    实时更新
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 行业报告 -->
-    <section id="industry" class="section">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-label">INDUSTRY REPORT</span>
-                <h2 class="section-title">超级加盟商行业概览</h2>
-                <p class="section-desc">基于3L+C模型的新型商业资产运营模式</p>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12 max-w-7xl">
+        
+        <!-- 投资回报计算器 -->
+        <section id="calculator" class="mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">💰 投资回报计算器</h2>
+                <p class="text-gray-600">输入项目信息，实时计算预期回报</p>
             </div>
 
-            <!-- 3L+C 模型 -->
-            <div class="model-grid">
-                <div class="model-card">
-                    <div class="model-icon">👥</div>
-                    <h3 class="model-title">Labor - 劳动力</h3>
-                    <p class="model-desc">超级加盟商专业团队</p>
-                    <ul class="model-list">
-                        <li>运营多个门店（5-6家）</li>
-                        <li>加盟多个品牌</li>
-                        <li>人货场高效匹配</li>
-                    </ul>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- 输入表单 -->
+                <div class="card bg-white rounded-2xl p-8 shadow-lg">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">📝 项目基本信息</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">项目名称</label>
+                            <input type="text" id="projectName" placeholder="如：浦东机场T2项目" 
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">投资金额（万元）</label>
+                            <input type="number" id="investAmount" value="400" 
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg" 
+                                oninput="calculateROI()">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">年化收益率（%）</label>
+                            <input type="number" id="annualRate" value="18" step="0.1"
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg"
+                                oninput="calculateROI()">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">分成比例（%）</label>
+                            <input type="number" id="shareRatio" value="35" step="1"
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg"
+                                oninput="calculateROI()">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">预计月收入（万元）</label>
+                            <input type="number" id="monthlyRevenue" value="86.5" step="0.1"
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg"
+                                oninput="calculateROI()">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">联营期限（月）</label>
+                            <input type="number" id="duration" value="18" 
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg"
+                                oninput="calculateROI()">
+                        </div>
+
+                        <button onclick="calculateROI()" 
+                            class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+                            🔄 重新计算
+                        </button>
+                    </div>
                 </div>
-                <div class="model-card">
-                    <div class="model-icon">📍</div>
-                    <h3 class="model-title">Land - 高势能点位</h3>
-                    <p class="model-desc">机场、高铁站等交通枢纽</p>
-                    <ul class="model-list">
-                        <li>独特选址资源</li>
-                        <li>高客流量保障</li>
-                        <li>稀缺性优势</li>
-                    </ul>
-                </div>
-                <div class="model-card">
-                    <div class="model-icon">🤝</div>
-                    <h3 class="model-title">Leverage - 杠杆</h3>
-                    <p class="model-desc">品牌方与PEVC支持</p>
-                    <ul class="model-list">
-                        <li>被投品牌引入</li>
-                        <li>联合投资</li>
-                        <li>资源整合</li>
-                    </ul>
-                </div>
-                <div class="model-card">
-                    <div class="model-icon">💰</div>
-                    <h3 class="model-title">Capital - 资本</h3>
-                    <p class="model-desc">外部资金助力扩张</p>
-                    <ul class="model-list">
-                        <li>RBF融资模式</li>
-                        <li>18%年化收益</li>
-                        <li>12-18月回本</li>
-                    </ul>
+
+                <!-- 计算结果 -->
+                <div class="card bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl p-8 shadow-lg text-white">
+                    <h3 class="text-xl font-bold mb-6">📊 投资回报分析</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-white/10 rounded-xl p-6 backdrop-blur">
+                            <div class="text-sm opacity-80 mb-1">预计回本周期</div>
+                            <div class="text-4xl font-bold" id="paybackPeriod">--</div>
+                            <div class="text-sm opacity-80">个月</div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white/10 rounded-xl p-4">
+                                <div class="text-sm opacity-80 mb-1">月均分成</div>
+                                <div class="text-2xl font-bold" id="monthlyShare">--</div>
+                                <div class="text-xs opacity-80">万元</div>
+                            </div>
+                            <div class="bg-white/10 rounded-xl p-4">
+                                <div class="text-sm opacity-80 mb-1">总回报</div>
+                                <div class="text-2xl font-bold" id="totalReturn">--</div>
+                                <div class="text-xs opacity-80">万元</div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/10 rounded-xl p-4">
+                            <div class="text-sm opacity-80 mb-2">封顶金额（含本金）</div>
+                            <div class="text-3xl font-bold" id="cappedAmount">--</div>
+                            <div class="text-xs opacity-80 mt-1">基于年化收益率计算</div>
+                        </div>
+
+                        <div class="bg-white/10 rounded-xl p-4">
+                            <div class="text-sm opacity-80 mb-2">预计利润</div>
+                            <div class="text-3xl font-bold" id="profit">--</div>
+                            <div class="text-xs opacity-80 mt-1">总回报 - 本金</div>
+                        </div>
+                    </div>
+
+                    <button onclick="exportCalculation()" 
+                        class="w-full mt-6 bg-white text-purple-600 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                        📥 导出计算结果
+                    </button>
                 </div>
             </div>
+        </section>
 
-            <!-- 核心数据 -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">🏪</div>
-                    <div class="stat-value" data-target="120">0</div>
-                    <div class="stat-unit">+门店</div>
-                    <div class="stat-label">累计运营规模</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📈</div>
-                    <div class="stat-value" data-target="18">0</div>
-                    <div class="stat-unit">%</div>
-                    <div class="stat-label">年化投资回报</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⏱️</div>
-                    <div class="stat-value" data-target="15">0</div>
-                    <div class="stat-unit">个月</div>
-                    <div class="stat-label">平均回本周期</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🎯</div>
-                    <div class="stat-value" data-target="70">0</div>
-                    <div class="stat-unit">%</div>
-                    <div class="stat-label">毛利率</div>
-                </div>
+        <!-- 企业筛选评估 -->
+        <section id="screening" class="mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">🎯 企业筛选评估</h2>
+                <p class="text-gray-600">基于8项标准的智能评分系统</p>
             </div>
 
-            <!-- 典型案例 -->
-            <div class="case-study">
-                <h3 class="case-title">典型案例：肆瓦-浦东机场T2项目</h3>
-                <div class="case-grid">
-                    <div class="case-item">
-                        <span class="case-label">项目点位</span>
-                        <span class="case-value">上海浦东国际机场T2国内禁区</span>
-                    </div>
-                    <div class="case-item">
-                        <span class="case-label">运营面积</span>
-                        <span class="case-value">374 m²</span>
-                    </div>
-                    <div class="case-item">
-                        <span class="case-label">入驻品牌</span>
-                        <span class="case-value">5个（3零售+2餐饮）</span>
-                    </div>
-                    <div class="case-item">
-                        <span class="case-label">投资金额</span>
-                        <span class="case-value">400万元</span>
-                    </div>
-                    <div class="case-item">
-                        <span class="case-label">年化收益</span>
-                        <span class="case-value">16-18%</span>
-                    </div>
-                    <div class="case-item">
-                        <span class="case-label">月度毛利</span>
-                        <span class="case-value">54.8万元</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 图表 -->
-            <div class="chart-container">
-                <h3 class="chart-title">历史履约数据</h3>
-                <canvas id="performanceChart"></canvas>
-            </div>
-        </div>
-    </section>
-
-    <!-- 企业筛选器 -->
-    <section id="screening" class="section section-dark">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-label">ENTERPRISE SCREENING</span>
-                <h2 class="section-title">被投企业智能筛选</h2>
-                <p class="section-desc">基于8项核心标准的AI评估系统</p>
-            </div>
-
-            <!-- 筛选表单 -->
-            <div class="screening-form">
-                <div class="form-section">
-                    <h3 class="form-section-title">📊 行业通识标准（权重30%）</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>1. 优质点位获取能力</label>
-                            <select id="criteria1" class="form-select">
-                                <option value="0">请选择</option>
-                                <option value="20">优秀（持有5+机场/高铁站点位）</option>
-                                <option value="15">良好（持有3-4个优质点位）</option>
-                                <option value="10">一般（持有1-2个点位）</option>
-                                <option value="5">较弱（无独立点位资源）</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>2. 收入与履约保障能力</label>
-                            <select id="criteria2" class="form-select">
-                                <option value="0">请选择</option>
-                                <option value="20">优秀（100%履约，收入稳定增长）</option>
-                                <option value="15">良好（履约率>90%）</option>
-                                <option value="10">一般（履约率70-90%）</option>
-                                <option value="5">较弱（履约率<70%）</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>3. 拓展与整合能力</label>
-                            <select id="criteria3" class="form-select">
-                                <option value="0">请选择</option>
-                                <option value="20">优秀（年新增10+门店）</option>
-                                <option value="15">良好（年新增5-9门店）</option>
-                                <option value="10">一般（年新增2-4门店）</option>
-                                <option value="5">较弱（年新增<2门店）</option>
-                            </select>
-                        </div>
-                    </div>
+            <div class="card bg-white rounded-2xl p-8 shadow-lg">
+                <div class="mb-8">
+                    <input type="text" id="companyName" placeholder="请输入被评估企业名称" 
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-lg font-semibold">
                 </div>
 
-                <div class="form-section">
-                    <h3 class="form-section-title">🎯 专属分析标准（权重70%）</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>4. 历史项目履约情况</label>
-                            <select id="criteria4" class="form-select">
-                                <option value="0">请选择</option>
-                                <option value="30">优秀（3+项目，全部回本）</option>
-                                <option value="22">良好（2-3项目，履约中）</option>
-                                <option value="15">一般（1项目或新企业）</option>
-                                <option value="8">较弱（有违约记录）</option>
-                            </select>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- 行业通识标准 -->
+                    <div>
+                        <h3 class="text-lg font-bold text-purple-600 mb-4">📊 行业通识标准（30%）</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">1. 点位获取能力</label>
+                                <select id="criteria1" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                                    <option value="0">请选择</option>
+                                    <option value="20">优秀 - 持有5+机场/高铁站</option>
+                                    <option value="15">良好 - 持有3-4个优质点位</option>
+                                    <option value="10">一般 - 持有1-2个点位</option>
+                                    <option value="5">较弱 - 无独立点位资源</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">2. 履约保障能力</label>
+                                <select id="criteria2" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                                    <option value="0">请选择</option>
+                                    <option value="20">优秀 - 100%履约，收入稳定</option>
+                                    <option value="15">良好 - 履约率>90%</option>
+                                    <option value="10">一般 - 履约率70-90%</option>
+                                    <option value="5">较弱 - 履约率<70%</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">3. 拓展整合能力</label>
+                                <select id="criteria3" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                                    <option value="0">请选择</option>
+                                    <option value="20">优秀 - 年新增10+门店</option>
+                                    <option value="15">良好 - 年新增5-9门店</option>
+                                    <option value="10">一般 - 年新增2-4门店</option>
+                                    <option value="5">较弱 - 年新增<2门店</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>5. AI技术应用能力</label>
-                            <select id="criteria5" class="form-select">
-                                <option value="0">请选择</option>
-                                <option value="30">优秀（自研AI系统，数据驱动）</option>
-                                <option value="22">良好（使用第三方AI工具）</option>
-                                <option value="15">一般（基础数据分析）</option>
-                                <option value="8">较弱（传统人工运营）</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>6. 品牌资源整合能力</label>
-                            <select id="criteria6" class="form-select">
-                                <option value="0">请选择</option>
-                                <option value="30">优秀（合作400+品牌）</option>
-                                <option value="22">良好（合作100-399品牌）</option>
-                                <option value="15">一般（合作50-99品牌）</option>
-                                <option value="8">较弱（合作<50品牌）</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>7. 资金使用效率</label>
-                            <select id="criteria7" class="form-select">
-                                <option value="0">请选择</option>
-                                <option value="30">优秀（回本<15个月）</option>
-                                <option value="22">良好（回本15-18个月）</option>
-                                <option value="15">一般（回本19-24个月）</option>
-                                <option value="8">较弱（回本>24个月）</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>8. 团队专业度与背景</label>
-                            <select id="criteria8" class="form-select">
-                                <option value="0">请选择</option>
-                                <option value="30">优秀（10+年行业经验，顶级机构背景）</option>
-                                <option value="22">良好（5-9年经验，成熟团队）</option>
-                                <option value="15">一般（3-4年经验）</option>
-                                <option value="8">较弱（<3年经验）</option>
-                            </select>
+                    </div>
+
+                    <!-- 专属分析标准 -->
+                    <div>
+                        <h3 class="text-lg font-bold text-purple-600 mb-4">🎯 专属分析标准（70%）</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">4. 历史履约情况</label>
+                                <select id="criteria4" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                                    <option value="0">请选择</option>
+                                    <option value="30">优秀 - 3+项目，全部回本</option>
+                                    <option value="22">良好 - 2-3项目，履约中</option>
+                                    <option value="15">一般 - 1项目或新企业</option>
+                                    <option value="8">较弱 - 有违约记录</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">5. AI技术应用</label>
+                                <select id="criteria5" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                                    <option value="0">请选择</option>
+                                    <option value="30">优秀 - 自研AI系统</option>
+                                    <option value="22">良好 - 使用第三方AI</option>
+                                    <option value="15">一般 - 基础数据分析</option>
+                                    <option value="8">较弱 - 传统人工运营</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">6. 品牌资源</label>
+                                <select id="criteria6" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                                    <option value="0">请选择</option>
+                                    <option value="30">优秀 - 合作400+品牌</option>
+                                    <option value="22">良好 - 合作100-399品牌</option>
+                                    <option value="15">一般 - 合作50-99品牌</option>
+                                    <option value="8">较弱 - 合作<50品牌</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">7. 资金效率</label>
+                                <select id="criteria7" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                                    <option value="0">请选择</option>
+                                    <option value="30">优秀 - 回本<15月</option>
+                                    <option value="22">良好 - 回本15-18月</option>
+                                    <option value="15">一般 - 回本19-24月</option>
+                                    <option value="8">较弱 - 回本>24月</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">8. 团队专业度</label>
+                                <select id="criteria8" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                                    <option value="0">请选择</option>
+                                    <option value="30">优秀 - 10+年经验</option>
+                                    <option value="22">良好 - 5-9年经验</option>
+                                    <option value="15">一般 - 3-4年经验</option>
+                                    <option value="8">较弱 - <3年经验</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-actions">
-                    <button onclick="calculateScore()" class="btn-primary">计算评分</button>
-                    <button onclick="resetForm()" class="btn-secondary">重置</button>
+                <div class="mt-8 flex gap-4">
+                    <button onclick="calculateScore()" 
+                        class="flex-1 bg-purple-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-purple-700 transition">
+                        📊 计算评分
+                    </button>
+                    <button onclick="resetScreening()" 
+                        class="px-8 bg-gray-200 text-gray-700 py-4 rounded-lg font-semibold hover:bg-gray-300 transition">
+                        🔄 重置
+                    </button>
                 </div>
             </div>
 
             <!-- 评分结果 -->
-            <div id="scoreResult" class="score-result" style="display: none;">
-                <div class="score-card">
-                    <div class="score-header">
-                        <h3>评估结果</h3>
-                        <div class="score-main">
-                            <span class="score-value" id="totalScore">0</span>
-                            <span class="score-max">/200</span>
+            <div id="scoreResult" class="hidden mt-8">
+                <div class="card result-card bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-8 shadow-lg text-white">
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold mb-4">评估结果：<span id="companyNameResult"></span></h3>
+                        <div class="inline-block">
+                            <div class="text-7xl font-black mb-2" id="totalScore">0</div>
+                            <div class="text-xl opacity-90">/ 200 分</div>
+                            <div class="text-2xl font-bold mt-4" id="scoreRating"></div>
                         </div>
-                        <div class="score-rating" id="scoreRating"></div>
                     </div>
-                    <div class="score-body">
-                        <div class="score-breakdown">
-                            <h4>得分明细</h4>
-                            <div class="breakdown-item">
-                                <span>行业通识标准</span>
-                                <span id="industryScore">0/60</span>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-white/20 rounded-xl p-4 backdrop-blur">
+                            <div class="text-sm opacity-90 mb-2">行业通识标准</div>
+                            <div class="text-3xl font-bold" id="industryScore">0</div>
+                            <div class="text-xs opacity-80">/ 60分</div>
+                        </div>
+                        <div class="bg-white/20 rounded-xl p-4 backdrop-blur">
+                            <div class="text-sm opacity-90 mb-2">专属分析标准</div>
+                            <div class="text-3xl font-bold" id="specificScore">0</div>
+                            <div class="text-xs opacity-80">/ 140分</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/20 rounded-xl p-6 backdrop-blur mb-4">
+                        <h4 class="font-bold text-lg mb-2">💡 投资建议</h4>
+                        <p id="recommendation" class="leading-relaxed"></p>
+                    </div>
+
+                    <div class="bg-white/20 rounded-xl p-6 backdrop-blur">
+                        <h4 class="font-bold text-lg mb-2">🛡️ 风控要点</h4>
+                        <p id="riskAnalysis" class="leading-relaxed"></p>
+                    </div>
+
+                    <button onclick="exportScreening()" 
+                        class="w-full mt-6 bg-white text-green-600 py-3 rounded-lg font-bold hover:bg-gray-100 transition">
+                        📥 导出评估报告
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 合同生成器 -->
+        <section id="contract" class="mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">📄 投资合同生成器</h2>
+                <p class="text-gray-600">填写关键信息，自动生成标准化合同</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- 合同信息填写 -->
+                <div class="card bg-white rounded-2xl p-8 shadow-lg">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">📝 合同基本信息</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">甲方（投资方）</label>
+                            <input type="text" id="partyA" value="滴灌通投资（海南）有限公司" 
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">乙方（运营主体）</label>
+                            <input type="text" id="partyB" placeholder="如：上海肆瓦商业管理有限公司" 
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">项目点位</label>
+                            <input type="text" id="location" placeholder="如：上海浦东国际机场T2" 
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">投资金额（万）</label>
+                                <input type="number" id="contractAmount" value="400" 
+                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
                             </div>
-                            <div class="breakdown-item">
-                                <span>专属分析标准</span>
-                                <span id="specificScore">0/140</span>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">年化率（%）</label>
+                                <input type="number" id="contractRate" value="18" 
+                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
                             </div>
                         </div>
-                        <div class="score-recommendation">
-                            <h4>投资建议</h4>
-                            <p id="recommendation"></p>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">分成比例（%）</label>
+                                <input type="number" id="contractShare" value="35" 
+                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">期限（月）</label>
+                                <input type="number" id="contractPeriod" value="18" 
+                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
+                            </div>
                         </div>
-                        <div class="score-risk">
-                            <h4>风控要点</h4>
-                            <p id="riskAnalysis"></p>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">签约日期</label>
+                            <input type="date" id="signDate" 
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg">
                         </div>
+
+                        <button onclick="generateContract()" 
+                            class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+                            ✨ 生成合同
+                            </button>
+                    </div>
+                </div>
+
+                <!-- 合同预览 -->
+                <div class="card bg-white rounded-2xl p-8 shadow-lg">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-gray-800">📋 合同预览</h3>
+                        <button onclick="downloadContract()" 
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition">
+                            📥 下载合同
+                        </button>
+                    </div>
+                    
+                    <div id="contractPreview" class="border-2 border-gray-200 rounded-lg p-6 bg-gray-50 min-h-[500px] max-h-[600px] overflow-y-auto">
+                        <p class="text-gray-400 text-center py-12">请填写左侧信息后生成合同</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 投资合同条款 -->
-    <section id="contract" class="section">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-label">CONTRACT TERMS</span>
-                <h2 class="section-title">投资合同关键条款</h2>
-                <p class="section-desc">基于RBF模式的标准化联营协议</p>
-            </div>
+    </main>
 
-            <div class="contract-grid">
-                <!-- 核心商业条款 -->
-                <div class="contract-section">
-                    <h3 class="contract-title">💼 核心商业条款</h3>
-                    <div class="contract-items">
-                        <div class="contract-item">
-                            <span class="contract-label">投资模式</span>
-                            <span class="contract-value">RBF（Revenue-Based Financing）收入分成</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">投资金额</span>
-                            <span class="contract-value">灵活设置，典型为300-500万元</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">年化收益率</span>
-                            <span class="contract-value">16-18%（静态IRR）</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">分成比例</span>
-                            <span class="contract-value">35-50%（根据项目风险调整）</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">联营期限</span>
-                            <span class="contract-value">固定期限12-18个月</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">回本周期</span>
-                            <span class="contract-value">预计12-18个月</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 收入分成安排 -->
-                <div class="contract-section">
-                    <h3 class="contract-title">💰 收入分成安排</h3>
-                    <div class="contract-items">
-                        <div class="contract-item">
-                            <span class="contract-label">收入定义</span>
-                            <span class="contract-value">租金+联销费用+服务费+可确认押金</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">分成计算</span>
-                            <span class="contract-value">日平息：每日计算封顶金额</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">封顶机制</span>
-                            <span class="contract-value">累计实收达到约定收益率后终止</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">数据传输</span>
-                            <span class="contract-value">每月1号手动报送数据</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">分成付款</span>
-                            <span class="contract-value">每月1号系统自动分账</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">付款方式</span>
-                            <span class="contract-value">银行转账或自动分账系统</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 前置条件 -->
-                <div class="contract-section">
-                    <h3 class="contract-title">✅ 投资前置条件</h3>
-                    <div class="contract-items">
-                        <div class="contract-item">
-                            <span class="contract-number">1</span>
-                            <span class="contract-text">乙方已取得经营业务所需的营业执照及相关资质证照</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-number">2</span>
-                            <span class="contract-text">乙方已签署租赁合同，并提供令甲方满意的相关证明</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-number">3</span>
-                            <span class="contract-text">甲方完成对项目的尽职调查，并取得内部审批通过</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-number">4</span>
-                            <span class="contract-text">数据传输方案与分账方案已完成且符合甲方要求</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-number">5</span>
-                            <span class="contract-text">乙方、丙方和丁方不存在违反陈述、保证及承诺的情形</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-number">6</span>
-                            <span class="contract-text">各方同意的其它前置条件（如适用）</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 风险控制 -->
-                <div class="contract-section">
-                    <h3 class="contract-title">🛡️ 风险控制措施</h3>
-                    <div class="contract-items">
-                        <div class="contract-item">
-                            <span class="contract-label">招商保障</span>
-                            <span class="contract-value">明确招商签约节点，储备3-5个备选品牌</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">收入保障</span>
-                            <span class="contract-value">保底租金+营业额分成，双重机制取高</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">数据核验</span>
-                            <span class="contract-value">营业截图+POS机小票双重验证</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">违约处理</span>
-                            <span class="contract-value">品牌押金抵扣机制，天图联合出资共担风险</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">资金用途</span>
-                            <span class="contract-value">仅限于项目日常业务经营，接受合规性检查</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">解除权利</span>
-                            <span class="contract-value">前置条件未满足20日内，甲方可单方解除</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 各方权责 -->
-                <div class="contract-section">
-                    <h3 class="contract-title">👥 各方权利义务</h3>
-                    <div class="contract-items">
-                        <div class="contract-item">
-                            <span class="contract-label">甲方（投资方）</span>
-                            <span class="contract-value">提供联营资金，获得收入分成，监督资金使用</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">乙方（运营主体）</span>
-                            <span class="contract-value">经营项目，按约分成，提供真实数据</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">丙方（母公司）</span>
-                            <span class="contract-value">负责子公司投资及运营管理，连带责任</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-label">丁方（实际控制人）</span>
-                            <span class="contract-value">承担个人连带责任，保证履约</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 特殊条款 -->
-                <div class="contract-section">
-                    <h3 class="contract-title">⚡ 特殊约定事项</h3>
-                    <div class="contract-items">
-                        <div class="contract-item">
-                            <span class="contract-text"><strong>分成前债务：</strong>甲方不承担收入分成期开始前乙方存在或产生的任何债务、负债和责任</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-text"><strong>税费承担：</strong>甲方不承担乙方经营应缴付的任何税项，乙方按法律法规自行承担</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-text"><strong>押金处理：</strong>商户提前退租或触发不退还条件时，剩余押金确认为乙方收入参与分成</span>
-                        </div>
-                        <div class="contract-item">
-                            <span class="contract-text"><strong>预付卡收入：</strong>按国家规定管理，收入分成期内完成消费的金额计入分成基数</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 下载合同模板 -->
-            <div class="contract-download">
-                <p>📄 需要完整合同模板？</p>
-                <button class="btn-download" onclick="alert('请联系投资经理获取完整合同模板')">下载合同模板</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- 页脚 -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-brand">
-                <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                </svg>
-                <span>滴灌通投资</span>
-            </div>
-            <p class="footer-copyright">© 2026 滴灌通投资（海南）有限公司 | 超级加盟商投资决策平台</p>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-400">© 2026 滴灌通投资（海南）有限公司 | 超级加盟商投资决策平台</p>
         </div>
     </footer>
-    </main>
 
     <script src="js/main.js"></script>
 </body>
