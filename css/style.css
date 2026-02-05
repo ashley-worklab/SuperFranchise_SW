@@ -1171,3 +1171,30 @@ button:has(.fa-copy):hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 59, 92, 0.3);
 }
+
+/* 内联输入框样式 */
+.inline-input {
+    display: inline-block;
+    vertical-align: middle;
+    border: 1px solid #E5E7EB !important;
+    border-radius: 4px;
+    padding: 0.5rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.inline-input:focus {
+    outline: none;
+    border-color: #00A3E0 !important;
+    box-shadow: 0 0 0 2px rgba(0, 163, 224, 0.1);
+}
+
+.inline-input::placeholder {
+    color: #9CA3AF;
+    font-size: 0.9rem;
+}
+
+/* 确保term-item中的段落有足够的行高 */
+.term-item p {
+    line-height: 2.2;
+}

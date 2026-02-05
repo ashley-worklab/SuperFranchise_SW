@@ -342,79 +342,28 @@
                 <h2 class="section-title">协议设计</h2>
                 <p class="section-description">投资协议关键条款一览</p>
                 
-                <!-- Contract Terms with Embedded Inputs -->
+                <!-- Contract Terms with Inline Inputs -->
                 <div class="contract-terms">
                     <h3 class="terms-title">关键条款</h3>
                     
                     <div class="terms-list">
-                        <!-- 基本信息输入 -->
-                        <div class="term-item term-input">
-                            <div class="term-number">基本信息</div>
-                            <div class="term-content">
-                                <div class="form-row" style="margin-bottom: 1rem;">
-                                    <div class="form-group" style="margin-bottom: 0;">
-                                        <label for="partyA" style="font-weight: 600; color: #003B5C; margin-bottom: 0.5rem; display: block;">甲方（投资方）</label>
-                                        <input type="text" id="partyA" placeholder="企业名称" style="width: 100%;">
-                                    </div>
-                                    
-                                    <div class="form-group" style="margin-bottom: 0;">
-                                        <label for="partyB" style="font-weight: 600; color: #003B5C; margin-bottom: 0.5rem; display: block;">乙方（运营方）</label>
-                                        <input type="text" id="partyB" placeholder="企业名称" style="width: 100%;">
-                                        <small style="color: #6B7280; font-size: 0.8rem; margin-top: 0.25rem; display: block;">
-                                            会自动填充"被投企业筛选评估"中的企业名称
-                                        </small>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-row" style="margin-bottom: 1rem;">
-                                    <div class="form-group" style="margin-bottom: 0;">
-                                        <label for="assetScope" style="font-weight: 600; color: #003B5C; margin-bottom: 0.5rem; display: block;">收入分成资产范围</label>
-                                        <input type="text" id="assetScope" placeholder="资产范围描述" style="width: 100%;">
-                                    </div>
-                                    
-                                    <div class="form-group" style="margin-bottom: 0;">
-                                        <label for="contractInvestment" style="font-weight: 600; color: #003B5C; margin-bottom: 0.5rem; display: block;">投资金额（万元）</label>
-                                        <input type="number" id="contractInvestment" placeholder="100" style="width: 100%;">
-                                        <small style="color: #6B7280; font-size: 0.8rem; margin-top: 0.25rem; display: block;">
-                                            会自动填充"投资计算器"中的投资金额
-                                        </small>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-row" style="margin-bottom: 1rem;">
-                                    <div class="form-group" style="margin-bottom: 0;">
-                                        <label for="contractAnnualRate" style="font-weight: 600; color: #003B5C; margin-bottom: 0.5rem; display: block;">年化收益率（静态年化 %）</label>
-                                        <input type="number" id="contractAnnualRate" placeholder="15" style="width: 100%;">
-                                        <small style="color: #6B7280; font-size: 0.8rem; margin-top: 0.25rem; display: block;">
-                                            会自动填充"投资计算器"中的预期收益率
-                                        </small>
-                                    </div>
-                                    
-                                    <div class="form-group" style="margin-bottom: 0;">
-                                        <label for="contractShareRatio" style="font-weight: 600; color: #003B5C; margin-bottom: 0.5rem; display: block;">分成比例（%）</label>
-                                        <input type="number" id="contractShareRatio" placeholder="10" style="width: 100%;">
-                                        <small style="color: #6B7280; font-size: 0.8rem; margin-top: 0.25rem; display: block;">
-                                            会自动填充"投资计算器"中的分成比例
-                                        </small>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group" style="margin-bottom: 0;">
-                                    <label for="contractDuration" style="font-weight: 600; color: #003B5C; margin-bottom: 0.5rem; display: block;">联营期限（月）</label>
-                                    <input type="number" id="contractDuration" placeholder="12" style="width: 100%;">
-                                    <small style="color: #6B7280; font-size: 0.8rem; margin-top: 0.25rem; display: block;">
-                                        会自动填充"投资计算器"计算出的预计封顶期限（天数转换为月）
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        
                         <!-- 01 投资方式 -->
                         <div class="term-item">
                             <div class="term-number">01</div>
                             <div class="term-content">
                                 <h4 class="term-title">投资方式</h4>
-                                <p id="termInvestment">甲方以现金方式投资人民币<strong>100万元</strong>，用于项目装修、设备采购、品牌加盟费等</p>
+                                <p style="line-height: 2.5;">
+                                    <span style="margin-right: 0.5rem;">甲方</span>
+                                    <input type="text" id="partyA" placeholder="投资方名称" class="inline-input" style="width: 180px; padding: 0.5rem; border: 1px solid #E5E7EB; border-radius: 4px; font-size: 0.95rem;">
+                                    <span style="margin: 0 0.5rem;">投资人民币</span>
+                                    <input type="number" id="contractInvestment" placeholder="100" class="inline-input" style="width: 100px; padding: 0.5rem; border: 1px solid #E5E7EB; border-radius: 4px; font-size: 0.95rem;">
+                                    <span style="margin: 0 0.5rem;">万元，用于</span>
+                                    <input type="text" id="assetScope" placeholder="项目装修、设备采购、品牌加盟费" class="inline-input" style="width: 280px; padding: 0.5rem; border: 1px solid #E5E7EB; border-radius: 4px; font-size: 0.95rem;">
+                                    <span style="margin-left: 0.5rem;">等</span>
+                                </p>
+                                <small style="color: #6B7280; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+                                    提示：投资金额会自动填充"投资计算器"中的数据
+                                </small>
                             </div>
                         </div>
                         
@@ -423,7 +372,18 @@
                             <div class="term-number">02</div>
                             <div class="term-content">
                                 <h4 class="term-title">收益分配</h4>
-                                <p id="termShare">甲方获得项目营业额的<strong>10%</strong>作为投资回报，年化收益率<strong>15%</strong></p>
+                                <p style="line-height: 2.5;">
+                                    <span style="margin-right: 0.5rem;">甲方获得</span>
+                                    <input type="text" id="partyB" placeholder="运营方名称" class="inline-input" style="width: 180px; padding: 0.5rem; border: 1px solid #E5E7EB; border-radius: 4px; font-size: 0.95rem;">
+                                    <span style="margin: 0 0.5rem;">（乙方）项目营业额的</span>
+                                    <input type="number" id="contractShareRatio" placeholder="10" class="inline-input" style="width: 80px; padding: 0.5rem; border: 1px solid #E5E7EB; border-radius: 4px; font-size: 0.95rem;">
+                                    <span style="margin: 0 0.5rem;">%作为投资回报，年化收益率</span>
+                                    <input type="number" id="contractAnnualRate" placeholder="15" class="inline-input" style="width: 80px; padding: 0.5rem; border: 1px solid #E5E7EB; border-radius: 4px; font-size: 0.95rem;">
+                                    <span style="margin-left: 0.5rem;">%</span>
+                                </p>
+                                <small style="color: #6B7280; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+                                    提示：乙方会自动填充"被投企业筛选评估"中的企业名称；分成比例和年化收益率会自动填充
+                                </small>
                             </div>
                         </div>
                         
@@ -432,7 +392,9 @@
                             <div class="term-number">03</div>
                             <div class="term-content">
                                 <h4 class="term-title">封顶机制</h4>
-                                <p id="termCap">甲方累计分成达到<strong>115万元</strong>（投资本金×1.15）时，投资关系终止</p>
+                                <p id="termCap">
+                                    甲方累计分成达到<strong id="capAmount">115</strong>万元（投资本金×<strong id="capMultiplier">1.15</strong>）时，投资关系终止
+                                </p>
                             </div>
                         </div>
                         
@@ -459,21 +421,29 @@
                             <div class="term-number">06</div>
                             <div class="term-content">
                                 <h4 class="term-title">退出机制</h4>
-                                <p id="termExit">联营期<strong>12个月</strong>，到期或达封顶金额时终止。提前退出需提前通知并返还相应款项</p>
+                                <p style="line-height: 2.5;">
+                                    <span style="margin-right: 0.5rem;">联营期</span>
+                                    <input type="number" id="contractDuration" placeholder="12" class="inline-input" style="width: 80px; padding: 0.5rem; border: 1px solid #E5E7EB; border-radius: 4px; font-size: 0.95rem;">
+                                    <span style="margin: 0 0.5rem;">个月，到期或达封顶金额时终止。提前退出需提前通知并返还相应款项</span>
+                                </p>
+                                <small style="color: #6B7280; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+                                    提示：联营期限会自动填充"投资计算器"计算出的预计封顶期限（天数转换为月）
+                                </small>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Finalize and Copy Button -->
+                    <!-- 生成并复制按钮 -->
                     <div style="margin-top: 2rem; text-align: center;">
                         <button onclick="finalizeAndCopy()" style="padding: 0.875rem 2rem; background: #003B5C; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
                             <i class="fas fa-copy" style="margin-right: 0.5rem;"></i>
-                            Finalize and Copy Text Version
+                            生成并复制文本版本
                         </button>
                         <p id="copyStatus" style="margin-top: 0.75rem; color: #00A3E0; font-weight: 600; min-height: 1.5rem;"></p>
                     </div>
                 </div>
             </section>
+
 
         </div>
     </main>

@@ -421,3 +421,32 @@ function finalizeAndCopy() {
         console.error('复制失败:', err);
     });
 }
+
+// ==========================================
+// 实时更新封顶金额
+// ==========================================
+
+function updateCapAmount() {
+    const investment = parseFloat(document.getElementById('contractInvestment').value) || 100;
+    const annualRate = parseFloat(document.getElementById('contractAnnualRate').value) || 15;
+    
+    const capAmount = (investment * (1 + annualRate / 100)).toFixed(2);
+    const multiplier = (1 + annualRate / 100).toFixed(2);
+    
+    document.getElementById('capAmount').textContent = capAmount;
+    document.getElementById('capMultiplier').textContent = multiplier;
+}
+
+// 监听投资金额和年化收益率变化
+document.addEventListener('DOMContentLoaded', function() {
+    const investmentInput = document.getElementById('contractInvestment');
+    const annualRateInput = document.getElementById('contractAnnualRate');
+    
+    if (investmentInput) {
+        investmentInput.addEventListener('input', updateCapAmount);
+    }
+    
+    if (annualRateInput) {
+        annualRateInput.addEventListener('input', updateCapAmount);
+    }
+});
