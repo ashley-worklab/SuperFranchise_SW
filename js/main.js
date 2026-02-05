@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化企业名称自动填充
     initAutoFillPartyB();
+    
+    // 初始化投资计算器数据自动填充到协议设计
+    initAutoFillContract();
 });
 
 // 初始化企业名称自动填充
@@ -42,6 +45,45 @@ function initAutoFillPartyB() {
         const enterpriseName = this.value.trim();
         if (enterpriseName) {
             partyBInput.value = enterpriseName;
+        }
+    });
+}
+
+// 初始化投资计算器数据自动填充到协议设计
+function initAutoFillContract() {
+    // 监听投资金额
+    const investAmountInput = document.getElementById('investAmount');
+    const contractInvestmentInput = document.getElementById('contractInvestment');
+    
+    investAmountInput.addEventListener('input', function() {
+        const value = this.value;
+        if (value) {
+            contractInvestmentInput.value = value;
+            console.log(`✅ 自动填充投资金额: ${value}`);
+        }
+    });
+    
+    // 监听年化收益率
+    const annualRateInput = document.getElementById('annualRate');
+    const contractAnnualRateInput = document.getElementById('contractAnnualRate');
+    
+    annualRateInput.addEventListener('input', function() {
+        const value = this.value;
+        if (value) {
+            contractAnnualRateInput.value = value;
+            console.log(`✅ 自动填充年化收益率: ${value}`);
+        }
+    });
+    
+    // 监听分成比例
+    const shareRatioInput = document.getElementById('shareRatio');
+    const contractShareRatioInput = document.getElementById('contractShareRatio');
+    
+    shareRatioInput.addEventListener('input', function() {
+        const value = this.value;
+        if (value) {
+            contractShareRatioInput.value = value;
+            console.log(`✅ 自动填充分成比例: ${value}`);
         }
     });
 }
@@ -124,6 +166,11 @@ function calculateROI() {
     document.getElementById('durationDays').textContent = Math.ceil(durationDays) + '天';
     document.getElementById('endDate').textContent = endDateString;
     document.getElementById('cappedAmount').textContent = cappedAmount.toFixed(2) + '万';
+    
+    // 自动填充联营期限到协议设计（转换为月）
+    const durationMonths = Math.ceil(durationDays / 30);
+    document.getElementById('contractDuration').value = durationMonths;
+    console.log(`✅ 自动填充联营期限: ${durationMonths} 月（${Math.ceil(durationDays)} 天）`);
     
     document.getElementById('calculatorResults').classList.remove('hidden');
     document.getElementById('calculatorResults').scrollIntoView({ behavior: 'smooth' });
