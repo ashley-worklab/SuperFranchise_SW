@@ -452,26 +452,13 @@
                         </div>
                     </div>
                     
-                    <!-- 操作按钮 -->
+                    <!-- 生成并复制按钮 -->
                     <div style="margin-top: 2rem; text-align: center;">
-                        <button onclick="generatePreview()" style="padding: 0.875rem 2rem; background: #00A3E0; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-right: 1rem;">
-                            <i class="fas fa-eye" style="margin-right: 0.5rem;"></i>
-                            生成预览
-                        </button>
-                        <button id="copyButton" onclick="copyToClipboard()" style="padding: 0.875rem 2rem; background: #003B5C; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; opacity: 0.5;" disabled>
+                        <button onclick="generateAndCopy()" style="padding: 0.875rem 2rem; background: #003B5C; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
                             <i class="fas fa-copy" style="margin-right: 0.5rem;"></i>
-                            复制文本
+                            生成并复制文本版本
                         </button>
                         <p id="copyStatus" style="margin-top: 0.75rem; color: #00A3E0; font-weight: 600; min-height: 1.5rem;"></p>
-                    </div>
-                    
-                    <!-- 预览区域 -->
-                    <div id="contractPreview" class="contract-preview hidden">
-                        <div class="preview-header">
-                            <i class="fas fa-file-alt"></i>
-                            <span>协议文本预览</span>
-                        </div>
-                        <div id="previewContent" class="preview-content"></div>
                     </div>
                 </div>
             </section>
